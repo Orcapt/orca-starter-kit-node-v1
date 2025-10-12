@@ -1,0 +1,33 @@
+{
+  "name": "lexia-starter-kit-node",
+  "version": "1.0.0",
+  "description": "Production-ready starter kit for building AI agents that integrate with the Lexia platform",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "node main.js --dev",
+    "prod": "node main.js --prod",
+    "test": "node main.js --dev"
+  },
+  "keywords": [
+    "lexia",
+    "ai",
+    "chatbot",
+    "openai",
+    "starter-kit"
+  ],
+  "author": "Lexia Team",
+  "license": "MIT",
+  "dependencies": {
+    "@lexia/sdk": "file:../../lexia-sdk/lexia-npm",
+    "express": "^4.18.0",
+    "openai": "^4.0.0",
+    "axios": "^1.6.0",
+    "tiktoken": "^1.0.0",
+    "pdf-parse": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+
