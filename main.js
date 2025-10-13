@@ -325,7 +325,7 @@ async function processMessage(data) {
   } catch (error) {
     const errorMsg = `Error processing message: ${error.message}`;
     console.error(errorMsg, error);
-    await lexia.sendError(data, errorMsg);
+    await lexia.sendError(data, errorMsg, null, error);
   }
 }
 
