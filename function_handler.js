@@ -2,21 +2,21 @@
  * Function Handler Module
  * ======================
  * 
- * This module handles all function calling capabilities for the Lexia AI Agent.
+ * This module handles all function calling capabilities for the Orca AI Agent.
  * It contains the function definitions, execution logic, and related utilities.
  * 
  * Key Features:
  * - DALL-E 3 image generation function
  * - Function schema definitions
  * - Function execution and error handling
- * - Streaming progress updates to Lexia
+ * - Streaming progress updates to Orca
  * 
- * Author: Lexia Team
+ * Author: Orca Team
  * License: MIT
  */
 
 const OpenAI = require('openai');
-const { Variables } = require('@lexia/sdk');
+const { Variables } = require('@orca/sdk');
 
 // Available functions schema for OpenAI
 const AVAILABLE_FUNCTIONS = [
@@ -117,21 +117,21 @@ async function generateImageWithDALLE(prompt, variables = null, size = "1024x102
  * Execute a function call and return the result and any generated file URL.
  * 
  * @param {Object} functionCall - The function call object from OpenAI
- * @param {Object} lexiaHandler - The Lexia handler instance for streaming updates
+ * @param {Object} orcaHandler - The Orca handler instance for streaming updates
  * @param {Object} data - The original chat message data
  * @returns {Promise<{result: string, fileUrl: string|null}>} Result message and generated file URL
  */
-async function executeFunctionCall(functionCall, lexiaHandler, data) {
+async function executeFunctionCall(functionCall, orcaHandler, data) {
   try {
     const functionName = functionCall.function.name;
     console.log(`🔧 Processing function: ${functionName}`);
     
-    // Stream generic function processing start to Lexia
+    // Stream generic function processing start to Orca
     const processingMsg = `\n⚙️ **Processing function:** ${functionName}`;
-    await lexiaHandler.streamChunk(data, processingMsg);
+    await orcaHandler.streamChunk(data, processingMsg);
     
     if (functionName === "generate_image") {
-      return await executeGenerateImage(functionCall, lexiaHandler, data);
+      return await executeGenerateImage(functionCall, orcaHandler, data);
     } else {
       const errorMsg = `Unknown function: ${functionName}`;
       console.error(errorMsg);
@@ -156,21 +156,21 @@ async function executeFunctionCall(functionCall, lexiaHandler, data) {
  * Execute the generate_image function specifically.
  * 
  * @param {Object} functionCall - The function call object from OpenAI
- * @param {Object} lexiaHandler - The Lexia handler instance for streaming updates
+ * @param {Object} orcaHandler - The Orca handler instance for streaming updates
  * @param {Object} data - The original chat message data
  * @returns {Promise<{result: string, fileUrl: string}>} Result message and generated image URL
  */
-async function executeGenerateImage(functionCall, lexiaHandler, data) {
+async function executeGenerateImage(functionCall, orcaHandler, data) {
   try {
     const args = JSON.parse(functionCall.function.arguments);
     console.log(`🎨 Executing DALL-E image generation with args:`, args);
     
-    // Stream function execution start to Lexia
+    // Stream function execution start to Orca
     const executionMsg = `\n🚀 **Executing function:** generate_image`;
-    await lexiaHandler.streamChunk(data, executionMsg);
+    await orcaHandler.streamChunk(data, executionMsg);
     
     // Stream image generation start markdown
-    await lexiaHandler.streamChunk(data, "[lexia.loading.image.start]");
+    await orcaHandler.streamChunk(data, "[orca.loading.image.start]");
     
     // Generate the image using our DALL-E function
     const imageUrl = await generateImageWithDALLE(
@@ -184,17 +184,17 @@ async function executeGenerateImage(functionCall, lexiaHandler, data) {
     console.log(`✅ DALL-E image generated: ${imageUrl}`);
     
     // Stream image generation end markdown
-    await lexiaHandler.streamChunk(data, "[lexia.loading.image.end]");
+    await orcaHandler.streamChunk(data, "[orca.loading.image.end]");
     
-    // Stream function completion to Lexia
+    // Stream function completion to Orca
     const completionMsg = `\n✅ **Function completed successfully:** generate_image`;
-    await lexiaHandler.streamChunk(data, completionMsg);
+    await orcaHandler.streamChunk(data, completionMsg);
     
     // Add image generation result to response
-    const imageResult = `\n\n🎨 **Image Generated Successfully!**\n\n**Prompt:** ${args.prompt}\n**Image URL:** [lexia.image.start]${imageUrl}[lexia.image.end] \n\n*Image created with DALL-E 3*`;
+    const imageResult = `\n\n🎨 **Image Generated Successfully!**\n\n**Prompt:** ${args.prompt}\n**Image URL:** [orca.image.start]${imageUrl}[orca.image.end] \n\n*Image created with DALL-E 3*`;
     
-    // Stream the image result to Lexia
-    await lexiaHandler.streamChunk(data, imageResult);
+    // Stream the image result to Orca
+    await orcaHandler.streamChunk(data, imageResult);
     
     console.log(`✅ Image generation completed: ${imageUrl}`);
     
@@ -227,11 +227,11 @@ function getAvailableFunctions() {
  * Process a list of function calls and return the combined result.
  * 
  * @param {Array} functionCalls - List of function call objects from OpenAI
- * @param {Object} lexiaHandler - The Lexia handler instance for streaming updates
+ * @param {Object} orcaHandler - The Orca handler instance for streaming updates
  * @param {Object} data - The original chat message data
  * @returns {Promise<{result: string, fileUrl: string|null}>} Combined result message and generated file URL
  */
-async function processFunctionCalls(functionCalls, lexiaHandler, data) {
+async function processFunctionCalls(functionCalls, orcaHandler, data) {
   if (!functionCalls || functionCalls.length === 0) {
     console.log("🔧 No function calls to process");
     return {
@@ -248,7 +248,7 @@ async function processFunctionCalls(functionCalls, lexiaHandler, data) {
   
   for (const functionCall of functionCalls) {
     try {
-      const { result, fileUrl } = await executeFunctionCall(functionCall, lexiaHandler, data);
+      const { result, fileUrl } = await executeFunctionCall(functionCall, orcaHandler, data);
       combinedResult += result;
       
       if (fileUrl && !generatedFileUrl) {

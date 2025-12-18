@@ -1,4 +1,4 @@
-# Quick Start Guide - Lexia AI Agent (Node.js)
+# Quick Start Guide - Orca AI Agent (Node.js)
 
 ## 🚀 Get Started in 5 Minutes
 
@@ -9,19 +9,19 @@
 
 ### Step 1: Install Dependencies
 ```bash
-cd lexia-starter-kit-node-v1
+cd orca-starter-kit-node-v1
 npm install
 ```
 
-### Step 2: Link Lexia SDK (Development)
+### Step 2: Link Orca SDK (Development)
 ```bash
-# Go to lexia npm package
-cd ../../lexia-sdk/lexia-npm
+# Go to orca npm package
+cd ../../orca-sdk/orca-npm
 npm link
 
 # Return to starter kit and link
-cd ../../lexia-starter-kits/lexia-starter-kit-node-v1
-npm link @lexia/sdk
+cd ../../orca-starter-kits/orca-starter-kit-node-v1
+npm link @orca/sdk
 ```
 
 ### Step 3: Run the Agent
@@ -35,7 +35,7 @@ npm start
 
 You should see:
 ```
-🚀 Starting Lexia AI Agent Starter Kit...
+🚀 Starting Orca AI Agent Starter Kit...
 ============================================================
 🔧 DEV MODE ACTIVE - No Centrifugo required!
 ============================================================
@@ -72,8 +72,8 @@ curl -X POST http://localhost:5001/api/v1/send_message \
 
 ### Step 5: Run with Frontend (Optional)
 ```bash
-# In a new terminal, start the Lexia frontend
-npx lexia --port=3000 --agent-port=5001
+# In a new terminal, start the Orca frontend
+npx orca --port=3000 --agent-port=5001
 ```
 
 Then open http://localhost:3000 in your browser!
@@ -81,7 +81,7 @@ Then open http://localhost:3000 in your browser!
 ## 📁 Project Structure
 
 ```
-lexia-starter-kit-node-v1/
+orca-starter-kit-node-v1/
 ├── main.js                    # 🎯 Main application entry point
 ├── agent_utils.js             # 🛠️ Utility functions
 ├── function_handler.js        # 🎨 Function calling (DALL-E)
@@ -170,7 +170,7 @@ Make sure to include your OpenAI API key in the request:
 1. Use `npm run dev` for local development
 2. Check console logs for detailed debugging
 3. Test with curl before integrating with frontend
-4. Use ngrok to expose local server for testing with Lexia platform
+4. Use ngrok to expose local server for testing with Orca platform
 
 ## 🆘 Need Help?
 
@@ -183,5 +183,5 @@ Make sure to include your OpenAI API key in the request:
 
 **Happy coding! 🚀**
 
-Built with ❤️ by the Lexia Team
+Built with ❤️ by the Orca Team
 

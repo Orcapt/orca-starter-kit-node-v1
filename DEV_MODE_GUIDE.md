@@ -1,8 +1,8 @@
-# Lexia Starter Kit - Dev Mode Guide (Node.js)
+# Orca Starter Kit - Dev Mode Guide (Node.js)
 
 ## Overview
 
-The Lexia Starter Kit now supports **Dev Mode** for local development without requiring Centrifugo infrastructure.
+The Orca Starter Kit now supports **Dev Mode** for local development without requiring Centrifugo infrastructure.
 
 ## Running the Starter Kit
 
@@ -15,7 +15,7 @@ node main.js --dev
 npm run dev
 
 # Option 3: Environment variable
-export LEXIA_DEV_MODE=true
+export ORCA_DEV_MODE=true
 node main.js
 ```
 
@@ -31,7 +31,7 @@ npm run prod
 npm start
 
 # Option 4: Environment variable
-export LEXIA_DEV_MODE=false
+export ORCA_DEV_MODE=false
 node main.js
 ```
 
@@ -39,10 +39,10 @@ node main.js
 
 ### Dev Mode Output:
 ```
-🚀 Starting Lexia AI Agent Starter Kit...
+🚀 Starting Orca AI Agent Starter Kit...
 ============================================================
 🔧 DEV MODE ACTIVE - No Centrifugo required!
-   Use --prod flag or LEXIA_DEV_MODE=false for production
+   Use --prod flag or ORCA_DEV_MODE=false for production
 ============================================================
 📖 API Documentation: http://localhost:5001/api/v1/
 🔍 Health Check: http://localhost:5001/api/v1/health
@@ -52,13 +52,13 @@ node main.js
 ============================================================
 
 ✨ This starter kit demonstrates:
-   - Clean integration with Lexia package
+   - Clean integration with Orca package
    - Inherited endpoints for common functionality
    - Customizable AI message processing
    - Conversation memory management
    - File processing (PDFs, images)
    - Function calling with DALL-E 3
-   - Proper data structure for Lexia communication
+   - Proper data structure for Orca communication
    - Comprehensive error handling and logging
    - Dev mode streaming (SSE, no Centrifugo)
 
@@ -72,10 +72,10 @@ node main.js
 
 ### Production Mode Output:
 ```
-🚀 Starting Lexia AI Agent Starter Kit...
+🚀 Starting Orca AI Agent Starter Kit...
 ============================================================
 🟢 PRODUCTION MODE - Centrifugo/WebSocket streaming
-   Use --dev flag or LEXIA_DEV_MODE=true for local development
+   Use --dev flag or ORCA_DEV_MODE=true for local development
 ============================================================
 📖 API Documentation: http://localhost:5001/api/v1/
 🔍 Health Check: http://localhost:5001/api/v1/health
@@ -114,15 +114,15 @@ if (process.argv.includes('--dev')) {
 } else if (process.argv.includes('--prod')) {
   devModeFlag = false;
 } else {
-  const envVal = (process.env.LEXIA_DEV_MODE || 'false').toLowerCase();
+  const envVal = (process.env.ORCA_DEV_MODE || 'false').toLowerCase();
   devModeFlag = ['true', '1', 'yes', 'y', 'on'].includes(envVal);
 }
 ```
 
-### 2. LexiaHandler Initialization
+### 2. OrcaHandler Initialization
 ```javascript
 // Initialize with selected mode
-const lexia = new LexiaHandler(devModeFlag);
+const orca = new OrcaHandler(devModeFlag);
 ```
 
 ### 3. Async/Await Pattern
@@ -130,7 +130,7 @@ const lexia = new LexiaHandler(devModeFlag);
 // Use async/await throughout for cleaner code
 for await (const chunk of stream) {
   // Process streaming chunks
-  await lexia.streamChunk(data, content);
+  await orca.streamChunk(data, content);
 }
 ```
 
@@ -138,7 +138,7 @@ for await (const chunk of stream) {
 
 ### 1. Start the Server
 ```bash
-cd lexia-starter-kit-node-v1
+cd orca-starter-kit-node-v1
 npm install
 npm run dev
 ```
@@ -181,10 +181,10 @@ curl http://localhost:5001/api/v1/poll/your-channel-id
 
 ## Upgrading from Previous Version
 
-No code changes needed! Just update the Lexia SDK:
+No code changes needed! Just update the Orca SDK:
 
 ```bash
-npm install @lexia/sdk@latest
+npm install @orca/sdk@latest
 ```
 
 Then you can use:
@@ -195,12 +195,12 @@ npm start     # Same as before (production)
 
 ## Requirements
 
-Make sure you have the latest version of @lexia/sdk:
+Make sure you have the latest version of @orca/sdk:
 ```bash
-npm install @lexia/sdk@latest
+npm install @orca/sdk@latest
 ```
 
-The @lexia/sdk package includes:
+The @orca/sdk package includes:
 - DevStreamClient
 - SSE endpoints
 - Async queue support
@@ -208,15 +208,15 @@ The @lexia/sdk package includes:
 
 ## Troubleshooting
 
-### Issue: "Cannot find module '@lexia/sdk'"
+### Issue: "Cannot find module '@orca/sdk'"
 **Solution:** Install or link the package
 ```bash
-npm install @lexia/sdk
+npm install @orca/sdk
 # OR for development
-cd ../../lexia-sdk/lexia-npm
+cd ../../orca-sdk/orca-npm
 npm link
-cd ../../lexia-starter-kits/lexia-starter-kit-node-v1
-npm link @lexia/sdk
+cd ../../orca-starter-kits/orca-starter-kit-node-v1
+npm link @orca/sdk
 ```
 
 ### Issue: Streaming not working in dev mode

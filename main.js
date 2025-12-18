@@ -1,8 +1,8 @@
 /**
- * Lexia AI Agent Starter Kit
+ * Orca AI Agent Starter Kit
  * ==========================
  * 
- * A production-ready starter kit for building AI agents that integrate with the Lexia platform.
+ * A production-ready starter kit for building AI agents that integrate with the Orca platform.
  * This demonstrates best practices for creating AI agents with proper memory management,
  * streaming responses, file processing, and function calling capabilities.
  * 
@@ -10,17 +10,17 @@
  * - Clean, maintainable architecture with separation of concerns
  * - Built-in conversation memory and thread management
  * - Support for PDF text extraction and image analysis
- * - Real-time response streaming via Lexia's infrastructure
+ * - Real-time response streaming via Orca's infrastructure
  * - Function calling with DALL-E 3 image generation
  * - Robust error handling and comprehensive logging
- * - Inherited endpoints from Lexia package for consistency
+ * - Inherited endpoints from Orca package for consistency
  * - Dev mode for local development without Centrifugo
  * 
  * Architecture:
  * - Main processing logic in processMessage() function
  * - Memory management via ConversationManager class
  * - Utility functions for OpenAI integration
- * - Standard Lexia endpoints inherited from package
+ * - Standard Orca endpoints inherited from package
  * 
  * Usage:
  *     node main.js              # Production mode (Centrifugo)
@@ -28,7 +28,7 @@
  *     node main.js --prod       # Force production mode
  *     
  *     # Or with environment variable:
- *     LEXIA_DEV_MODE=true node main.js
+ *     ORCA_DEV_MODE=true node main.js
  * 
  * The server will start on http://localhost:5001 with the following endpoints:
  * - POST /api/v1/send_message - Main chat endpoint
@@ -37,7 +37,7 @@
  * - GET /api/v1/stream/{channel} - SSE stream (dev mode only)
  * - GET /api/v1/poll/{channel} - Polling endpoint (dev mode only)
  * 
- * Author: Lexia Team
+ * Author: Orca Team
  * License: MIT
  */
 
@@ -46,13 +46,13 @@ const axios = require('axios');
 const { encoding_for_model } = require('tiktoken');
 const pdfParse = require('pdf-parse');
 
-// Import Lexia components
+// Import Orca components
 const {
-  LexiaHandler,
+  OrcaHandler,
   Variables,
-  createLexiaApp,
+  createOrcaApp,
   addStandardEndpoints
-} = require('@lexia/sdk');
+} = require('@orca/sdk');
 
 // Import AI agent components
 const { ConversationManager } = require('./memory');
@@ -68,26 +68,26 @@ if (process.argv.includes('--dev')) {
   devModeFlag = false;
   console.log("🚀 Production mode enabled via --prod flag");
 } else {
-  const envVal = (process.env.LEXIA_DEV_MODE || 'false').toLowerCase();
+  const envVal = (process.env.ORCA_DEV_MODE || 'false').toLowerCase();
   devModeFlag = ['true', '1', 'yes', 'y', 'on'].includes(envVal);
   if (devModeFlag) {
-    console.log("🔧 Dev mode enabled via LEXIA_DEV_MODE environment variable");
+    console.log("🔧 Dev mode enabled via ORCA_DEV_MODE environment variable");
   }
 }
 
 // Initialize core services
 const conversationManager = new ConversationManager(10);  // Keep last 10 messages per thread
-const lexia = new LexiaHandler(devModeFlag);
+const orca = new OrcaHandler(devModeFlag);
 
-// Create the Express app using Lexia's web utilities
-const app = createLexiaApp({
-  title: "Lexia AI Agent Starter Kit",
+// Create the Express app using Orca's web utilities
+const app = createOrcaApp({
+  title: "Orca AI Agent Starter Kit",
   version: "1.0.0",
-  description: "Production-ready AI agent starter kit with Lexia integration"
+  description: "Production-ready AI agent starter kit with Orca integration"
 });
 
 /**
- * Process incoming chat messages using OpenAI and send responses via Lexia.
+ * Process incoming chat messages using OpenAI and send responses via Orca.
  * 
  * This is the core AI processing function that you can customize for your specific use case.
  * The function handles:
@@ -99,8 +99,8 @@ const app = createLexiaApp({
  * 6. Response streaming and completion
  * 
  * @param {Object} data - ChatMessage object containing the incoming message and metadata
- * @returns {Promise<void>} Responses are sent via Lexia's streaming and completion APIs
- * @throws {Error} If message processing fails (errors are sent to Lexia)
+ * @returns {Promise<void>} Responses are sent via Orca's streaming and completion APIs
+ * @throws {Error} If message processing fails (errors are sent to Orca)
  * 
  * Customization Points:
  * - Modify system prompts and context
@@ -137,8 +137,8 @@ async function processMessage(data) {
     if (!openaiApiKey) {
       const missingKeyMsg = "Sorry, the OpenAI API key is missing or empty. From menu right go to admin mode, then agents and edit the agent in last section you can set the openai key.";
       console.error("OpenAI API key not found or empty in variables");
-      await lexia.streamChunk(data, missingKeyMsg);
-      await lexia.completeResponse(data, missingKeyMsg);
+      await orca.streamChunk(data, missingKeyMsg);
+      await orca.completeResponse(data, missingKeyMsg);
       return;
     }
     
@@ -236,8 +236,8 @@ async function processMessage(data) {
       if (chunk.choices[0]?.delta?.content) {
         const content = chunk.choices[0].delta.content;
         fullResponse += content;
-        // Stream chunk to Lexia (handles dev/prod mode internally)
-        await lexia.streamChunk(data, content);
+        // Stream chunk to Orca (handles dev/prod mode internally)
+        await orca.streamChunk(data, content);
       }
       
       // Handle function call chunks
@@ -257,9 +257,9 @@ async function processMessage(data) {
               });
               console.log(`🔧 New function call initialized: ${toolCall.function.name}`);
               
-              // Stream function call announcement to Lexia
+              // Stream function call announcement to Orca
               const functionMsg = `\n🔧 **Calling function:** ${toolCall.function.name}`;
-              await lexia.streamChunk(data, functionMsg);
+              await orca.streamChunk(data, functionMsg);
             }
             
             // Accumulate function arguments
@@ -267,14 +267,14 @@ async function processMessage(data) {
               functionCalls[toolCall.index].function.arguments += toolCall.function.arguments;
               console.log(`🔧 Accumulated arguments for function ${toolCall.index}: ${toolCall.function.arguments}`);
               
-              // Stream function execution progress to Lexia
+              // Stream function execution progress to Orca
               try {
                 const currentArgs = functionCalls[toolCall.index].function.arguments;
                 // Try to parse as JSON to show progress
                 if (currentArgs.endsWith('"') || currentArgs.endsWith('}') || currentArgs.endsWith(']')) {
                   const parsedArgs = JSON.parse(currentArgs);
                   const progressMsg = `\n⚙️ **Function parameters:** ${JSON.stringify(parsedArgs, null, 2)}`;
-                  await lexia.streamChunk(data, progressMsg);
+                  await orca.streamChunk(data, progressMsg);
                 }
               } catch (parseError) {
                 // JSON not complete yet, don't stream partial data
@@ -294,7 +294,7 @@ async function processMessage(data) {
     console.log(`✅ OpenAI response complete. Length: ${fullResponse.length} characters`);
     
     // Process function calls if any were made using the function handler
-    const { result: functionResult, fileUrl: generatedFileUrl } = await processFunctionCalls(functionCalls, lexia, data);
+    const { result: functionResult, fileUrl: generatedFileUrl } = await processFunctionCalls(functionCalls, orca, data);
     if (functionResult) {
       fullResponse += functionResult;
     }
@@ -307,17 +307,17 @@ async function processMessage(data) {
     // Store response in conversation memory
     conversationManager.addMessage(data.thread_id, "assistant", fullResponse);
     
-    // Send complete response to Lexia with full data structure
-    console.log("📤 Sending complete response to Lexia...");
+    // Send complete response to Orca with full data structure
+    console.log("📤 Sending complete response to Orca...");
     
     // Include generated image in the response if one was created
     if (generatedImageUrl) {
       console.log(`🖼️ Including generated image in API call: ${generatedImageUrl}`);
       // Use the completeResponse method that includes the file field
-      await lexia.completeResponse(data, fullResponse, usageInfo, generatedImageUrl);
+      await orca.completeResponse(data, fullResponse, usageInfo, generatedImageUrl);
     } else {
       // Normal response without image
-      await lexia.completeResponse(data, fullResponse, usageInfo);
+      await orca.completeResponse(data, fullResponse, usageInfo);
     }
     
     console.log(`🎉 Message processing completed successfully for thread ${data.thread_id}`);
@@ -325,31 +325,31 @@ async function processMessage(data) {
   } catch (error) {
     const errorMsg = `Error processing message: ${error.message}`;
     console.error(errorMsg, error);
-    await lexia.sendError(data, errorMsg, null, error);
+    await orca.sendError(data, errorMsg, null, error);
   }
 }
 
-// Add standard Lexia endpoints including the inherited send_message endpoint
+// Add standard Orca endpoints including the inherited send_message endpoint
 // This provides all the standard functionality without additional code
 addStandardEndpoints(app, {
   conversationManager: conversationManager,
-  lexiaHandler: lexia,
+  orcaHandler: orca,
   processMessageFunc: processMessage
 });
 
 // Start the server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
-  console.log("🚀 Starting Lexia AI Agent Starter Kit...");
+  console.log("🚀 Starting Orca AI Agent Starter Kit...");
   console.log("=".repeat(60));
   
   // Display mode
-  if (lexia.devMode) {
+  if (orca.devMode) {
     console.log("🔧 DEV MODE ACTIVE - No Centrifugo required!");
-    console.log("   Use --prod flag or LEXIA_DEV_MODE=false for production");
+    console.log("   Use --prod flag or ORCA_DEV_MODE=false for production");
   } else {
     console.log("🟢 PRODUCTION MODE - Centrifugo/WebSocket streaming");
-    console.log("   Use --dev flag or LEXIA_DEV_MODE=true for local development");
+    console.log("   Use --dev flag or ORCA_DEV_MODE=true for local development");
   }
   
   console.log("=".repeat(60));
@@ -357,23 +357,23 @@ app.listen(PORT, () => {
   console.log(`🔍 Health Check: http://localhost:${PORT}/api/v1/health`);
   console.log(`💬 Chat Endpoint: http://localhost:${PORT}/api/v1/send_message`);
   
-  if (lexia.devMode) {
+  if (orca.devMode) {
     console.log(`📡 SSE Stream: http://localhost:${PORT}/api/v1/stream/{channel}`);
     console.log(`📊 Poll Stream: http://localhost:${PORT}/api/v1/poll/{channel}`);
   }
   
   console.log("=".repeat(60));
   console.log("\n✨ This starter kit demonstrates:");
-  console.log("   - Clean integration with Lexia package");
+  console.log("   - Clean integration with Orca package");
   console.log("   - Inherited endpoints for common functionality");
   console.log("   - Customizable AI message processing");
   console.log("   - Conversation memory management");
   console.log("   - File processing (PDFs, images)");
   console.log("   - Function calling with DALL-E 3");
-  console.log("   - Proper data structure for Lexia communication");
+  console.log("   - Proper data structure for Orca communication");
   console.log("   - Comprehensive error handling and logging");
   
-  if (lexia.devMode) {
+  if (orca.devMode) {
     console.log("   - Dev mode streaming (SSE, no Centrifugo)");
   } else {
     console.log("   - Production streaming (Centrifugo/WebSocket)");

@@ -1,17 +1,17 @@
-# Lexia AI Agent Starter Kit (Node.js)
+# Orca AI Agent Starter Kit (Node.js)
 
-A clean, minimal example showing how to build AI agents that integrate with the Lexia platform using Node.js. This starter kit demonstrates best practices for creating AI agents with proper memory management, streaming responses, and file processing capabilities.
+A clean, minimal example showing how to build AI agents that integrate with the Orca platform using Node.js. This starter kit demonstrates best practices for creating AI agents with proper memory management, streaming responses, and file processing capabilities.
 
 ## ✨ Features
 
 - **Clean Architecture**: Well-structured, maintainable code with clear separation of concerns
 - **Memory Management**: Built-in conversation history and thread management
 - **File Processing**: Support for PDF text extraction and image analysis
-- **Streaming Responses**: Real-time response streaming via Lexia's infrastructure
-- **Function Calling**: Built-in DALL-E 3 image generation capabilities with Lexia image markdown
+- **Streaming Responses**: Real-time response streaming via Orca's infrastructure
+- **Function Calling**: Built-in DALL-E 3 image generation capabilities with Orca image markdown
 - **Variables Helper**: Modern Variables class for clean API key and configuration management
 - **Error Handling**: Robust error handling and logging throughout
-- **Standard Endpoints**: Inherited endpoints from Lexia package for consistency
+- **Standard Endpoints**: Inherited endpoints from Orca package for consistency
 - **Dev Mode**: Local development mode with SSE streaming (no Centrifugo required)
 
 ## 🚀 Quick Start
@@ -21,14 +21,14 @@ A clean, minimal example showing how to build AI agents that integrate with the 
 - Node.js 14.0+
 - npm or yarn
 - OpenAI API key
-- Access to Lexia platform
+- Access to Orca platform
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Xalantico/lexia-starter-kit-node-v1
-   cd lexia-starter-kit-node-v1
+   git clone https://github.com/Orcapt/orca-starter-kit-node-v1
+   cd orca-starter-kit-node-v1
    ```
 
 2. **Install dependencies**
@@ -36,12 +36,12 @@ A clean, minimal example showing how to build AI agents that integrate with the 
    npm install
    ```
 
-3. **Link the Lexia SDK (for development)**
+3. **Link the Orca SDK (for development)**
    ```bash
-   cd ../../lexia-sdk/lexia-npm
+   cd ../../orca-sdk/orca-npm
    npm link
-   cd ../../lexia-starter-kits/lexia-starter-kit-node-v1
-   npm link @lexia/sdk
+   cd ../../orca-starter-kits/orca-starter-kit-node-v1
+   npm link @orca/sdk
    ```
 
 4. **Run the starter kit**
@@ -51,12 +51,12 @@ A clean, minimal example showing how to build AI agents that integrate with the 
 
 The server will start on `http://localhost:5001`
 
-### Run Lexia Frontend locally
+### Run Orca Frontend locally
 
-If you have Node.js installed, you can run the Lexia frontend without source code using the runner:
+If you have Node.js installed, you can run the Orca frontend without source code using the runner:
 
 ```bash
-npx lexia --port=3000 --agent-port=5001
+npx orca --port=3000 --agent-port=5001
 ```
 
 This serves the UI at `http://localhost:3000` and proxies API calls to your local agent at `http://localhost:5001`.
@@ -77,7 +77,7 @@ Once running, you can access:
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Lexia         │───▶│  Starter Kit     │───▶│   OpenAI        │
+│   Orca         │───▶│  Starter Kit     │───▶│   OpenAI        │
 │  Platform       │    │                  │    │     API         │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
        ▲                        │                        │
@@ -156,10 +156,10 @@ The starter kit supports:
 
 ### Variables Helper Class
 
-The starter kit uses the modern Variables helper class from the Lexia package for clean configuration management:
+The starter kit uses the modern Variables helper class from the Orca package for clean configuration management:
 
 ```javascript
-const { Variables } = require('@lexia/sdk');
+const { Variables } = require('@orca/sdk');
 
 // Initialize variables helper
 const vars = new Variables(data.variables);
@@ -180,33 +180,33 @@ if (vars.has("OPENAI_API_KEY")) {
 - **Clean API**: Object-oriented approach instead of utility functions
 - **Better Performance**: Built-in caching for faster lookups
 - **Flexible**: Easy to change variable names without code changes
-- **Consistent**: Same pattern across all Lexia integrations
+- **Consistent**: Same pattern across all Orca integrations
 
-## 🖼️ Image Generation with Lexia Markdown
+## 🖼️ Image Generation with Orca Markdown
 
-The starter kit includes DALL-E 3 image generation with Lexia's native image markdown functionality:
+The starter kit includes DALL-E 3 image generation with Orca's native image markdown functionality:
 
 ### How It Works
 
-When generating images, the system automatically wraps the process with Lexia's image markdown tags:
+When generating images, the system automatically wraps the process with Orca's image markdown tags:
 
 ```javascript
 // Before image generation
-await lexiaHandler.streamChunk(data, "[lexia.loading.image.start]");
+await orcaHandler.streamChunk(data, "[orca.loading.image.start]");
 
 // Generate image with DALL-E 3
 const imageUrl = await generateImageWithDALLE(...);
 
 // After image generation
-await lexiaHandler.streamChunk(data, "[lexia.loading.image.end]");
+await orcaHandler.streamChunk(data, "[orca.loading.image.end]");
 
 // Include image URL in response
-const imageResult = `Image URL: [lexia.image.start]${imageUrl}[lexia.image.end]`;
+const imageResult = `Image URL: [orca.image.start]${imageUrl}[orca.image.end]`;
 ```
 
 ### Features
 
-- **Automatic Markdown**: Images are automatically wrapped with Lexia image tags
+- **Automatic Markdown**: Images are automatically wrapped with Orca image tags
 - **Real-time Streaming**: Users see progress during image generation
 - **Error Handling**: Graceful fallback if image generation fails
 - **Customizable**: Easy to modify image parameters (size, quality, style)
@@ -215,7 +215,7 @@ const imageResult = `Image URL: [lexia.image.start]${imageUrl}[lexia.image.end]`
 
 ### 1. Setup ngrok for External Access
 
-To test your agent from the Lexia platform, you'll need to expose your local server to the internet using ngrok:
+To test your agent from the Orca platform, you'll need to expose your local server to the internet using ngrok:
 
 1. **Install ngrok**
    ```bash
@@ -238,9 +238,9 @@ To test your agent from the Lexia platform, you'll need to expose your local ser
 4. **Copy the ngrok URL**
    ngrok will display a URL like: `https://abc123.ngrok-free.app`
 
-### 2. Configure Agent in Lexia Platform
+### 2. Configure Agent in Orca Platform
 
-1. Go to the [Lexia Platform](https://app.lexiaplatform.com)
+1. Go to the [Orca Platform](https://app.orcaplatform.com)
 2. Navigate to **Agents** → **Create New Agent**
 3. In the **Agent Configuration** section:
    - Set **Agent Type** to "Custom Agent"
@@ -249,7 +249,7 @@ To test your agent from the Lexia platform, you'll need to expose your local ser
 
 ### 3. Test Your Agent
 
-Once configured, test your setup by sending a message through the Lexia platform or directly via curl:
+Once configured, test your setup by sending a message through the Orca platform or directly via curl:
 
 ```bash
 curl -X POST "https://your-ngrok-url.ngrok-free.app/api/v1/send_message" \
@@ -279,14 +279,14 @@ curl -X POST "https://your-ngrok-url.ngrok-free.app/api/v1/send_message" \
 
 2. **API Key Issues**: The starter kit now provides helpful error messages when the OpenAI API key is missing:
    - "Sorry, the OpenAI API key is missing or empty. From menu right go to admin mode, then agents and edit the agent in last section you can set the openai key."
-   - This guides users to the correct location in the Lexia platform to configure their API key
+   - This guides users to the correct location in the Orca platform to configure their API key
 
 3. **Port Conflicts**: Change the port in `main.js` if 5001 is already in use:
    ```javascript
    const PORT = process.env.PORT || 5001;
    ```
 
-4. **Variables Not Found**: Use the Variables helper class to access configuration values from Lexia requests
+4. **Variables Not Found**: Use the Variables helper class to access configuration values from Orca requests
 
 ### Debug Mode
 
@@ -303,12 +303,12 @@ console.log = (...args) => {
 ## 📖 Code Structure
 
 ```
-lexia-starter-kit-node-v1/
+orca-starter-kit-node-v1/
 ├── main.js                    # Main application entry point
 ├── package.json               # Dependencies and scripts
 ├── README.md                  # This file
 ├── DEV_MODE_GUIDE.md          # Dev mode documentation
-├── lexiaNativeComponent.md    # Lexia native components guide
+├── orcaNativeComponent.md    # Orca native components guide
 ├── .gitignore                 # Git ignore patterns
 ├── memory/                    # Memory management module
 │   ├── index.js
@@ -335,7 +335,7 @@ This starter kit is provided as-is for development and educational purposes.
 For issues and questions:
 
 1. Check the logs for detailed error messages
-2. Review the Lexia platform documentation
+2. Review the Orca platform documentation
 3. Open an issue in this repository
 
 ---

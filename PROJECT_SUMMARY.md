@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Node.js starter kit is a complete replication of the Python starter kit, adapted for the Node.js ecosystem with the `@lexia/sdk` npm package.
+This Node.js starter kit is a complete replication of the Python starter kit, adapted for the Node.js ecosystem with the `@orca/sdk` npm package.
 
 ## ✅ Successfully Replicated Features
 
@@ -37,7 +37,7 @@ This Node.js starter kit is a complete replication of the Python starter kit, ad
   - Async function execution
   - Error handling
   - Progress streaming
-  - Lexia native components integration
+  - Orca native components integration
 
 ### 5. Documentation
 - ✅ **README.md** - Comprehensive documentation (344 lines)
@@ -53,14 +53,14 @@ This Node.js starter kit is a complete replication of the Python starter kit, ad
   - Troubleshooting
   - Testing examples
 
-- ✅ **lexiaNativeComponent.md** - Lexia components guide (156 lines)
+- ✅ **orcaNativeComponent.md** - Orca components guide (156 lines)
   - JavaScript examples
   - Usage patterns
   - Best practices
 
 ### 6. Package Configuration
 - ✅ **package.json** - Dependencies and scripts
-  - `@lexia/sdk` as primary dependency
+  - `@orca/sdk` as primary dependency
   - OpenAI, Express, Axios
   - PDF parsing with pdf-parse
   - Tiktoken for token counting
@@ -74,7 +74,7 @@ This Node.js starter kit is a complete replication of the Python starter kit, ad
 
 ### 7. Directory Structure
 ```
-lexia-starter-kit-node-v1/
+orca-starter-kit-node-v1/
 ├── main.js                    # ✅ Main application
 ├── agent_utils.js             # ✅ AI utilities
 ├── function_handler.js        # ✅ Function calling
@@ -84,7 +84,7 @@ lexia-starter-kit-node-v1/
 ├── package.json               # ✅ Dependencies
 ├── README.md                  # ✅ Documentation
 ├── DEV_MODE_GUIDE.md          # ✅ Dev mode guide
-├── lexiaNativeComponent.md    # ✅ Components guide
+├── orcaNativeComponent.md    # ✅ Components guide
 ├── .gitignore                 # ✅ Git ignore
 └── uploads/                   # ✅ Uploads directory
 ```
@@ -104,7 +104,7 @@ lexia-starter-kit-node-v1/
 | **Variables Helper** | ✅ Variables class | ✅ Variables class | ✅ Replicated |
 | **Error Handling** | ✅ Comprehensive | ✅ Comprehensive | ✅ Replicated |
 | **Logging** | ✅ Detailed | ✅ Detailed | ✅ Replicated |
-| **Lexia Components** | ✅ Image markdown | ✅ Image markdown | ✅ Replicated |
+| **Orca Components** | ✅ Image markdown | ✅ Image markdown | ✅ Replicated |
 
 ## 🔄 Key Adaptations for Node.js
 
@@ -128,11 +128,11 @@ async function processMessage(data) {
 ### 2. Module System
 ```javascript
 // Python uses import
-from lexia import LexiaHandler, Variables
+from orca import OrcaHandler, Variables
 from memory import ConversationManager
 
 // Node.js uses require
-const { LexiaHandler, Variables } = require('@lexia/sdk');
+const { OrcaHandler, Variables } = require('@orca/sdk');
 const { ConversationManager } = require('./memory');
 ```
 
@@ -156,12 +156,12 @@ const message = `🚀 Processing message for thread ${data.thread_id}`;
 
 ## 📦 Package Integration
 
-### Lexia SDK
-- **Python**: `lexia>=1.2.5` from PyPI
-- **Node**: `@lexia/sdk` from npm (locally linked for development)
+### Orca SDK
+- **Python**: `orca>=1.2.5` from PyPI
+- **Node**: `@orca/sdk` from npm (locally linked for development)
 
 Both provide:
-- LexiaHandler for communication
+- OrcaHandler for communication
 - Variables helper for configuration
 - Standard endpoints integration
 - Dev mode support
@@ -173,11 +173,11 @@ Both provide:
 # Install dependencies
 npm install
 
-# Link Lexia SDK (for development)
-cd ../../lexia-sdk/lexia-npm
+# Link Orca SDK (for development)
+cd ../../orca-sdk/orca-npm
 npm link
-cd ../../lexia-starter-kits/lexia-starter-kit-node-v1
-npm link @lexia/sdk
+cd ../../orca-starter-kits/orca-starter-kit-node-v1
+npm link @orca/sdk
 ```
 
 ### Running
@@ -248,7 +248,7 @@ curl -X POST http://localhost:5001/api/v1/send_message \
 
 ## 🎉 Conclusion
 
-The Node.js starter kit successfully replicates all features from the Python version while adapting to Node.js idioms and best practices. It provides a clean, production-ready foundation for building AI agents with the Lexia platform.
+The Node.js starter kit successfully replicates all features from the Python version while adapting to Node.js idioms and best practices. It provides a clean, production-ready foundation for building AI agents with the Orca platform.
 
 **Key Achievements:**
 - ✅ Complete feature parity with Python version
