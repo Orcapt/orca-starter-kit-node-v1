@@ -16,7 +16,7 @@
  */
 
 const OpenAI = require('openai');
-const { Variables } = require('@orca/sdk');
+const { Variables } = require('@orcapt/sdk');
 
 // Available functions schema for OpenAI
 const AVAILABLE_FUNCTIONS = [

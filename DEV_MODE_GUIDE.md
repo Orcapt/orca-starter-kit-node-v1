@@ -184,7 +184,7 @@ curl http://localhost:5001/api/v1/poll/your-channel-id
 No code changes needed! Just update the Orca SDK:
 
 ```bash
-npm install @orca/sdk@latest
+npm install @orcapt/sdk@latest
 ```
 
 Then you can use:
@@ -195,12 +195,12 @@ npm start     # Same as before (production)
 
 ## Requirements
 
-Make sure you have the latest version of @orca/sdk:
+Make sure you have the latest version of @orcapt/sdk:
 ```bash
-npm install @orca/sdk@latest
+npm install @orcapt/sdk@latest
 ```
 
-The @orca/sdk package includes:
+The @orcapt/sdk package includes:
 - DevStreamClient
 - SSE endpoints
 - Async queue support
@@ -208,15 +208,15 @@ The @orca/sdk package includes:
 
 ## Troubleshooting
 
-### Issue: "Cannot find module '@orca/sdk'"
+### Issue: "Cannot find module '@orcapt/sdk'"
 **Solution:** Install or link the package
 ```bash
-npm install @orca/sdk
+npm install @orcapt/sdk
 # OR for development
 cd ../../orca-sdk/orca-npm
 npm link
 cd ../../orca-starter-kits/orca-starter-kit-node-v1
-npm link @orca/sdk
+npm link @orcapt/sdk
 ```
 
 ### Issue: Streaming not working in dev mode

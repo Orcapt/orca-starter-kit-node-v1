@@ -52,7 +52,7 @@ const {
   Variables,
   createOrcaApp,
   addStandardEndpoints
-} = require('@orca/sdk');
+} = require('@orcapt/sdk');
 
 // Import AI agent components
 const { ConversationManager } = require('./memory');
